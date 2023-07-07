@@ -1,0 +1,3 @@
+lazy-*.json
+**/**/*luarc*.json
+**/**/.DS_Store
