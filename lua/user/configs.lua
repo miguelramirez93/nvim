@@ -42,10 +42,11 @@ return {
     winbar = "  %{%v:lua.require'api.pvim'.codectx_service.get_ctx()%}",
   },
   colorscheme = {
-    name = "base16-tomorrow-night",
+    name = "onedark",
   },
   plugin_specs = {
-    { "RRethy/nvim-base16", lazy = false, priority = 1000 },
+    { "RRethy/nvim-base16", lazy = false },
+    {'navarasu/onedark.nvim', lazy = false, priority = 1000 },
     { cfg= {'rcarriga/nvim-notify'}, setup = function()
       vim.print("from notify")
       require("notify").setup({})

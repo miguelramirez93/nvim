@@ -49,6 +49,11 @@ function service.with_completion_client(cli)
   return service
 end
 
+function service.with_autopairs_client(cli)
+  service.completion_service.autopairs_cli = cli
+  return service
+end
+
 function service.with_syntax_client(cli)
   syntax_builder_service.client = cli
   return service

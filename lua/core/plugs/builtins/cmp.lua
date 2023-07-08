@@ -24,7 +24,7 @@ local cmp = {
   },
 }
 
-function cmp.load(snippets_engine)
+function cmp.load(snippets_engine, autopairs_cli)
   local cmp_status_ok, client = pcall(require, "cmp")
   if not cmp_status_ok then return end
   
@@ -101,6 +101,13 @@ function cmp.load(snippets_engine)
       { name = 'cmdline' }
     })
   })
+
+  if autopairs_cli then 
+    client.event:on(
+    'confirm_done',
+    autopairs_cli.on_confirm_done()
+    )
+  end
 end
 
 function cmp.complete()

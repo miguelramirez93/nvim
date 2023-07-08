@@ -18,7 +18,8 @@ local version_ctrl_service     = require "core.versionctrl.service"
 local lualine                  = require "core.plugs.builtins.lualine"
 local symbols_outline          = require "core.plugs.builtins.symbols_outline"
 local neotest                  = require "core.plugs.builtins.neotest"
-local luasnip = require "core.lsp.completion.engines.luasnip"
+local luasnip                  = require "core.lsp.completion.engines.luasnip"
+local autopairs                = require "core.plugs.builtins.autopairs"
 
 local client_lazy              = require "core.plugs.client_lazy"
 
@@ -44,6 +45,7 @@ local def_cfg                  = {
     global_capabilities = {},
     diagnostics_cfg = {},
     completion_cli = cmp,
+    autopairs_cli = autopairs,
     syntax_cli = treesitter,
     snippets_engine = luasnip,
     folding_cli = ufo,
@@ -106,6 +108,7 @@ function pvim.setup(custom_cfg)
 
   --lsp service setup
   lsp_plugs_mem_storage.add(cfg.lsp.completion_cli)
+  lsp_plugs_mem_storage.add(cfg.lsp.autopairs_cli)
   lsp_plugs_mem_storage.add(cfg.lsp.syntax_cli)
   pvim.lsp.with_syntax_client(cfg.lsp.syntax_cli)
 
@@ -138,6 +141,7 @@ function pvim.setup(custom_cfg)
 
   pvim.lsp.with_plugs_storage(lsp_plugs_mem_storage)
   pvim.lsp.with_completion_client(cfg.lsp.completion_cli)
+  pvim.lsp.with_autopairs_client(cfg.lsp.autopairs_cli)
 
   if cfg.lsp.diagnostics_cfg then
     diagnostic_mem_storage.diagnostic_cfg = vim.tbl_deep_extend("force", cfg.lsp.diagnostics_cfg,

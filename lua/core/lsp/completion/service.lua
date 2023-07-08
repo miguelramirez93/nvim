@@ -3,10 +3,13 @@ local service = {
     load = function(snippets_engines) end
   },
   snippets_engine = {},
+  autopairs_cli = {
+    on_confirm_done = function() end
+  },
 }
 
 function service.setup_completion()
-  service.client.load(service.snippets_engine)
+  service.client.load(service.snippets_engine, service.autopairs_cli)
 end
 
 function service.complete()
