@@ -20,6 +20,8 @@ local symbols_outline          = require "core.plugs.builtins.symbols_outline"
 local neotest                  = require "core.plugs.builtins.neotest"
 local luasnip                  = require "core.lsp.completion.engines.luasnip"
 local autopairs                = require "core.plugs.builtins.autopairs"
+local toggleterm               = require "core.plugs.builtins.toggleterm"
+local terminal_service         = require "core.terminal.service"
 
 local client_lazy              = require "core.plugs.client_lazy"
 
@@ -61,6 +63,7 @@ local def_cfg                  = {
   tabs_cli = barbar,
   version_ctrl_cli = gitsigns,
   status_line_cli = lualine,
+  terminal_cli = toggleterm,
 }
 
 local pvim                     = {
@@ -75,6 +78,7 @@ local pvim                     = {
   codectx_service = codectx_service,
   tabs_service = tabs_service,
   version_ctrl_service = version_ctrl_service,
+  terminal_service = terminal_service,
 }
 
 function pvim.setup_plugs()
@@ -200,6 +204,12 @@ function pvim.setup(custom_cfg)
     pvim.plugs.add_plug_cfg(cfg.status_line_cli)
   end
 
+  --terminal
+  if cfg.terminal_cli then
+    pvim.terminal_service.client = cfg.terminal_cli
+    pvim.plugs.add_plug_cfg(pvim.terminal_service.client)
+  end
+
   -- setup pvim
   pvim.setup_plugs()
   pvim.setup_lsp()
@@ -215,38 +225,38 @@ function pvim.set_colorscheme(cfg)
 end
 
 function pvim.set_commands()
-  vim.api.nvim_create_user_command('PvimTestCurrentFile', function()
+  vim.api.nvim_create_user_command('PvTestCurrentFile', function()
     pvim.lsp.tests_runner_service.summary_open()
     pvim.lsp.tests_runner_service.run_current_file()
   end, {})
-  vim.api.nvim_create_user_command('PvimTestAll', function()
+  vim.api.nvim_create_user_command('PvTestAll', function()
     pvim.lsp.tests_runner_service.summary_open()
     pvim.lsp.tests_runner_service.run_current_root()
   end, {})
-  vim.api.nvim_create_user_command('PvimTestFunc', function()
+  vim.api.nvim_create_user_command('PvTestFunc', function()
     pvim.lsp.tests_runner_service.run_nearest()
   end, {})
-  vim.api.nvim_create_user_command('PvimTestFuncDebug', function()
+  vim.api.nvim_create_user_command('PvTestFuncDebug', function()
     pvim.lsp.tests_runner_service.run_nearest_debug()
   end, {})
-  vim.api.nvim_create_user_command('PvimTestStop', function()
+  vim.api.nvim_create_user_command('PvTestStop', function()
     pvim.lsp.tests_runner_service.summary_open()
     pvim.lsp.tests_runner_service.run_nearest_debug()
   end, {})
-  vim.api.nvim_create_user_command('PvimTestSummary', function()
+  vim.api.nvim_create_user_command('PvTestSummary', function()
     pvim.lsp.tests_runner_service.summary_toggle()
   end, {})
-  vim.api.nvim_create_user_command('PvimTestPrevFailed', function()
+  vim.api.nvim_create_user_command('PvTestPrevFailed', function()
     pvim.lsp.tests_runner_service.go_to_prev_failed()
   end, {})
-  vim.api.nvim_create_user_command('PvimTestNextFailed', function()
+  vim.api.nvim_create_user_command('PvTestNextFailed', function()
     pvim.lsp.tests_runner_service.go_to_next_failed()
   end, {})
-  vim.api.nvim_create_user_command('PvimTestCurrResult', function()
+  vim.api.nvim_create_user_command('PvTestCurrResult', function()
     pvim.lsp.tests_runner_service.current_test_result()
   end, {})
   --codectx
-  vim.api.nvim_create_user_command('PvimOutLineToggle', function()
+  vim.api.nvim_create_user_command('PvOutLineToggle', function()
     pvim.codectx_service.toggle_outline_sym()
   end, {})
 end

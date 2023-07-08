@@ -45,13 +45,16 @@ return {
     name = "onedark",
   },
   plugin_specs = {
-    { "RRethy/nvim-base16", lazy = false },
-    {'navarasu/onedark.nvim', lazy = false, priority = 1000 },
-    { cfg= {'rcarriga/nvim-notify'}, setup = function()
-      vim.print("from notify")
-      require("notify").setup({})
-      vim.notify = require("notify")
-    end,},
+    { "RRethy/nvim-base16",    lazy = false },
+    { 'navarasu/onedark.nvim', lazy = false, priority = 1000 },
+    {
+      cfg = { 'rcarriga/nvim-notify' },
+      setup = function()
+        vim.print("from notify")
+        require("notify").setup({})
+        vim.notify = require("notify")
+      end,
+    },
   },
   setup_keymap = function(pvim)
     -- completion
@@ -97,6 +100,11 @@ return {
     -- vcs
     vim.keymap.set("n", "gb", pvim.version_ctrl_service.blame_curr_line, { silent = false })
     vim.keymap.set("n", "bd", pvim.version_ctrl_service.get_buffer_diffs, { silent = false })
+
+    -- terminal
+    vim.keymap.set("n", "<C-j>", pvim.terminal_service.open_horizontal, { silent = false })
+    vim.keymap.set("n", "<C-j>h", pvim.terminal_service.open_vertical, { silent = false })
+    vim.keymap.set("n", "<C-j>f", pvim.terminal_service.open_float, { silent = false })
 
     --vim.fn.feedkeys(vim.api.nvim_replace_termcodes("\n", true, true, true), "n")
   end

@@ -8,7 +8,7 @@ local lsp_signature = {
     floating_window = true,
     hint_enable = true,
     fix_pos = false,
-    floating_window_off_y = -0.5, 
+    floating_window_off_y = 0,
   },
   opts = {},
 }
