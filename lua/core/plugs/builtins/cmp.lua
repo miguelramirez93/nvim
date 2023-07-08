@@ -1,12 +1,10 @@
 local tablehlprs = require "shared.table_helpers"
-local luasnip = require "core.lsp.completion.engines.luasnip"
 
 local def_sources = {
   { name = 'nvim_lsp' },
   { name = "path" },
   { name = 'buffer' },
-  luasnip,
-  { name = 'nvim_lsp_signature_help' },
+  --{ name = 'nvim_lsp_signature_help' },
 
   --{ name = 'vsnip' }, -- For vsnip users.
   --{ name = 'luasnip' }, -- For luasnip users.
@@ -22,25 +20,25 @@ local cmp = {
     { 'hrsh7th/cmp-path', },
     { 'hrsh7th/cmp-cmdline' },
     { 'hrsh7th/nvim-cmp' },
-    -- snippets
-    { "L3MON4D3/LuaSnip", },
+    --{ "hrsh7th/cmp-nvim-lsp-signature-help" },
   },
 }
 
-function cmp.load(snippets_engines)
+function cmp.load(snippets_engine)
   local cmp_status_ok, client = pcall(require, "cmp")
   if not cmp_status_ok then return end
+  
+  local sources = tablehlprs.merge_arrays({snippets_engine}, def_sources)
 
-  local sources = tablehlprs.merge_arrays(snippets_engines, def_sources)
+  if snippets_engine.preload then
+    snippets_engine.preload()
+  end
 
   client.setup({
     snippet = {
       -- REQUIRED - you must specify a snippet engine
       expand = function(args)
-        for i, engine in ipairs(snippets_engines) do
-          engine.expand(args)
-        end
-        luasnip.expand(args)
+        snippets_engine.expand(args)
       end,
     },
     window = {
@@ -50,6 +48,29 @@ function cmp.load(snippets_engines)
     mapping = client.mapping.preset.insert({
       ["<C-y>"] = client.config.disable,                                                                      -- Specify `cmp.config.disable` if you want to remove the default `<C-y>` mapping.
       ['<CR>'] = client.mapping.confirm({ select = false, behavior = client.ConfirmBehavior.Replace }),       -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+      ["<Tab>"] = client.mapping(function(fallback)
+        if client.visible() then
+          client.select_next_item()
+        -- You could replace the expand_or_jumpable() calls with expand_or_locally_jumpable() 
+        -- they way you will only jump inside the snippet region
+        elseif snippets_engine.visible() then
+          snippets_engine.select_next_item()
+        elseif has_words_before() then
+          client.complete()
+        else
+          fallback()
+        end
+      end, { "i", "s" }),
+  
+      ["<S-Tab>"] = client.mapping(function(fallback)
+        if client.visible() then
+          client.select_prev_item()
+        elseif snippets_engine.prev_item_selectable() then
+          snippets_engine.select_prev_item()
+        else
+          fallback()
+        end
+      end, { "i", "s" }),
     }),
     sources = sources,
   })

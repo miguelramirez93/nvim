@@ -18,6 +18,7 @@ local version_ctrl_service     = require "core.versionctrl.service"
 local lualine                  = require "core.plugs.builtins.lualine"
 local symbols_outline          = require "core.plugs.builtins.symbols_outline"
 local neotest                  = require "core.plugs.builtins.neotest"
+local luasnip = require "core.lsp.completion.engines.luasnip"
 
 local client_lazy              = require "core.plugs.client_lazy"
 
@@ -44,9 +45,7 @@ local def_cfg                  = {
     diagnostics_cfg = {},
     completion_cli = cmp,
     syntax_cli = treesitter,
-    snippets_engines = {
-      vsnip,
-    },
+    snippets_engine = luasnip,
     folding_cli = ufo,
     codectx_cli = navic,
     fn_siganture_cli = lsp_signature,
@@ -119,10 +118,8 @@ function pvim.setup(custom_cfg)
     pvim.lsp.tests_runner_service.add_runner(runner)
   end
 
-  for _, engine in ipairs(cfg.lsp.snippets_engines) do
-    lsp_plugs_mem_storage.add(engine)
-    pvim.lsp.completion_service.add_engine(engine)
-  end
+  lsp_plugs_mem_storage.add(cfg.lsp.snippets_engine)
+  pvim.lsp.completion_service.snippets_engine = cfg.lsp.snippets_engine
 
   -- lsp codectx
   pvim.codectx_service.client = cfg.lsp.codectx_cli

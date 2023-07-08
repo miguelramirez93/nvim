@@ -5,7 +5,10 @@ local lsp_signature = {
   },
   def_opts = {
     hint_prefix = "",
-    floating_window = false,
+    floating_window = true,
+    hint_enable = false,
+    fix_pos = true,
+    floating_window_off_y = -0.5, 
   },
   opts = {},
 }

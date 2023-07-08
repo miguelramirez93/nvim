@@ -37,7 +37,7 @@ return {
     setup = function()
       require('go').setup({
         auto_lint = false,
-        linter = 'golangci-lint',
+        linter = 'staticcheck',
         lint_prompt_style = 'vt',
         test_popup = true,
         test_popup_auto_leave = false,
