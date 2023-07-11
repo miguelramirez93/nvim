@@ -7,7 +7,7 @@ local signs              = {
 
 local diagnostic_storage = {
   diagnostic_cfg = {
-    virtual_text = true,
+    virtual_text = false,
     diagnostics = { signs = { active = true, value = signs } },
     update_in_insert = false,
     underline = true,
