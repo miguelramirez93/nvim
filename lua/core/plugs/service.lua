@@ -50,7 +50,7 @@ function service.setup_plugs()
       local d_opts = plug_cfg.def_opts or {}
       local opts = vim.tbl_deep_extend("force",d_opts, c_opts)
       plug_cfg.implementation().setup(opts)
-    elseif plug_cfg.setup then
+    elseif plug_cfg.setup and plug_cfg.cfg then
       plug_cfg.setup()
     end
   end

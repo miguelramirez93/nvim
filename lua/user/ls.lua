@@ -46,4 +46,15 @@ return {
       })
     end
   },
+  {
+    name = "grovy",
+    ls = {
+      name = "groovyls",
+      lang = "groovy",
+      opts = {
+        -- Unix
+        cmd = { "java", "-jar", "/Users/joser/ls/groovy-language-server-all.jar" },
+      },
+    },
+  },
 }
