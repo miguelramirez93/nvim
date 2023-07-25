@@ -1,6 +1,8 @@
 local test_runner_go = {
-    cfg = {"nvim-neotest/neotest-go"},
-    opts = {},
+    cfg = { "nvim-neotest/neotest-go" },
+    opts = {
+        args = { "-timeout=30s" }
+    },
 }
 
 function test_runner_go.runner()

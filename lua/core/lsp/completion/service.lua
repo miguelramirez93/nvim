@@ -1,6 +1,6 @@
 local service = {
   client = {
-    load = function(snippets_engines) end
+    load = function(snippets_engines, autopairs_cli) end
   },
   snippets_engine = {},
   autopairs_cli = {

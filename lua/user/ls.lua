@@ -57,4 +57,14 @@ return {
       },
     },
   },
+  {
+    name = "java",
+    ls = {
+      name = "jdtls",
+      lang = "java",
+      opts = {
+        cmd = {"jdtls"}
+      },
+    },
+  },
 }

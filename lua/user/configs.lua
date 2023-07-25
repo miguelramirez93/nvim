@@ -55,6 +55,21 @@ return {
         vim.notify = require("notify")
       end,
     },
+    {
+      cfg = { 'mvllow/modes.nvim' },
+      setup = function()
+        require('modes').setup()
+      end
+    },
+    {
+      cfg = {
+        "williamboman/mason.nvim",
+        build = ":MasonUpdate" -- :MasonUpdate updates registry contents
+      },
+      setup = function ()
+        require("mason").setup()
+      end
+    },
   },
   setup_keymap = function(pvim)
     -- completion
