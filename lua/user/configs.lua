@@ -42,15 +42,26 @@ return {
     winbar = "  %{%v:lua.require'api.pvim'.codectx_service.get_ctx()%}",
   },
   colorscheme = {
-    name = "onedark",
+    name = "nordic",
+    background = "",
   },
   plugin_specs = {
-    { "RRethy/nvim-base16",    lazy = false },
-    { 'navarasu/onedark.nvim', lazy = false, priority = 1000 },
+    { 'navarasu/onedark.nvim', lazy = false },
+    {
+      cfg = { 'rebelot/kanagawa.nvim', lazy = false, priority = 1000 },
+      setup = function()
+        require('kanagawa').setup({
+          theme = "dragon",
+          background = {
+            dark = "dragon",
+            light = "lotus"
+          },
+        })
+      end
+    },
     {
       cfg = { 'rcarriga/nvim-notify' },
       setup = function()
-        vim.print("from notify")
         require("notify").setup({})
         vim.notify = require("notify")
       end,
@@ -66,9 +77,16 @@ return {
         "williamboman/mason.nvim",
         build = ":MasonUpdate" -- :MasonUpdate updates registry contents
       },
-      setup = function ()
+      setup = function()
         require("mason").setup()
       end
+    },
+    {
+      cfg = {
+        'AlexvZyl/nordic.nvim',
+        lazy = false,
+        priority = 1000,
+      },
     },
   },
   setup_keymap = function(pvim)
