@@ -22,6 +22,7 @@ local luasnip                  = require "core.lsp.completion.engines.luasnip"
 local autopairs                = require "core.plugs.builtins.autopairs"
 local toggleterm               = require "core.plugs.builtins.toggleterm"
 local terminal_service         = require "core.terminal.service"
+local mason                    = require "core.plugs.builtins.mason"
 
 local client_lazy              = require "core.plugs.client_lazy"
 
@@ -56,6 +57,7 @@ local def_cfg                  = {
     outline_sym_cli = symbols_outline,
     tests_runner_cli = neotest,
     test_runners = {},
+    installer_cli = mason,
   },
   search_cli = telescope,
   explorer_cli = nvimtree,
@@ -79,6 +81,10 @@ local pvim                     = {
   tabs_service = tabs_service,
   version_ctrl_service = version_ctrl_service,
   terminal_service = terminal_service,
+  vim_opts = {
+    -- file_name-modified-code_ctx
+    winbar = "  %-.16t%-m > %{%v:lua.require'api.pvim'.codectx_service.get_ctx()%}",
+  }
 }
 
 function pvim.setup_plugs()
@@ -143,7 +149,10 @@ function pvim.setup(custom_cfg)
     table.insert(pvim.lsp.attacheable_srcs, attacheable)
   end
 
-  pvim.lsp.with_plugs_storage(lsp_plugs_mem_storage)
+  -- lsp ls installer
+  lsp_plugs_mem_storage.add(cfg.lsp.installer_cli)
+  pvim.lsp.with_server_installer_client(cfg.lsp.installer_cli)
+
   pvim.lsp.with_completion_client(cfg.lsp.completion_cli)
   pvim.lsp.with_autopairs_client(cfg.lsp.autopairs_cli)
 
@@ -171,6 +180,7 @@ function pvim.setup(custom_cfg)
   end
 
   pvim.lsp.with_langsrvs_storage(lsp_langsvrs_mem_storage)
+  pvim.lsp.with_plugs_storage(lsp_plugs_mem_storage)
 
   -- folding
   pvim.folding_service.client = cfg.lsp.folding_cli
@@ -217,7 +227,8 @@ function pvim.setup(custom_cfg)
 end
 
 function pvim.set_options(opts)
-  vim_service.set_options(opts)
+  local mergedopts = vim.tbl_deep_extend("force", pvim.vim_opts, opts)
+  vim_service.set_options(mergedopts)
 end
 
 function pvim.set_colorscheme(cfg)

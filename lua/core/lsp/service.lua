@@ -2,6 +2,8 @@ local tablehlprs             = require "shared.table_helpers"
 local completion_service     = require "core.lsp.completion.service"
 local syntax_builder_service = require "core.lsp.syntaxbuilder.service"
 local tests_runner_service                = require "core.lsp.tests_runner.service"
+local server_installer_service                  = require "core.lsp.server_installer.service"
+
 
 local service                = {
   plugs_storage = {},
@@ -12,6 +14,7 @@ local service                = {
   completion_service = completion_service,
   attacheable_srcs = {},
   tests_runner_service = tests_runner_service,
+  server_installer_service = server_installer_service,
 }
 
 function service.with_langsrvs_storage(storage)
@@ -64,6 +67,11 @@ function service.with_tests_runner_client(cli)
   return service
 end
 
+function service.with_server_installer_client(cli)
+  service.server_installer_service.client = cli
+  return service
+end
+
 function service.get_plugs()
   return tablehlprs.merge_arrays(service.plugs_storage.get_all(), service.langsrvs_storage.get_all())
 end
@@ -73,7 +81,7 @@ function service.setup_langsrvs()
   if not lspconfig_installed then return end
 
   local def_capabilities = service.capabilities_storage.get_default()
-
+  local servers_to_install = {}
   for _, langsrvr in ipairs(service.langsrvs_storage.get_all()) do
     local opts = {
       capabilities = def_capabilities,
@@ -94,9 +102,10 @@ function service.setup_langsrvs()
     end
     if langsrvr.ls.name and lspconfig[langsrvr.ls.name] then
       lspconfig[langsrvr.ls.name].setup(opts)
+      table.insert(servers_to_install, langsrvr.ls.name)
     end
-    
   end
+  service.server_installer_service.install_servers(servers_to_install)
 end
 
 function service.setup_completion()

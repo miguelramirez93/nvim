@@ -9,9 +9,11 @@ local nvimtree = {
   },
   opts = {},
   def_opts = {
-    view = {adaptive_size = true},
+    view = {
+      adaptive_size = true,
+    },
     auto_reload_on_write = true,
-    git = {enable = true, ignore = false, timeout = 400},
+    git = {enable = true, ignore = false, timeout = 3000},
     update_focused_file = {
       enable = true,
       update_cwd = false,

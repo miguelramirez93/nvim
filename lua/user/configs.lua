@@ -13,7 +13,7 @@ return {
     mouse = "a",               -- allow the mouse to be used in neovim
     pumheight = 10,            -- pop up menu height
     showmode = false,          -- we don't need to see things like -- INSERT -- anymore
-    showtabline = 2,           -- always show tabs
+    showtabline = 0,           -- always show tabs
     smartcase = true,          -- smart case
     smartindent = true,        -- make indenting smarter again
     splitbelow = true,         -- force all horizontal splits to go below current window
@@ -39,25 +39,41 @@ return {
     showcmd = false,
     ruler = false,
     laststatus = 3,
-    winbar = "  %{%v:lua.require'api.pvim'.codectx_service.get_ctx()%}",
   },
   colorscheme = {
-    name = "nordic",
-    background = "",
+    name = "catppuccin-frappe",
+    background = "dark",
   },
   plugin_specs = {
     { 'navarasu/onedark.nvim', lazy = false },
     {
-      cfg = { 'rebelot/kanagawa.nvim', lazy = false, priority = 1000 },
-      setup = function()
-        require('kanagawa').setup({
-          theme = "dragon",
-          background = {
-            dark = "dragon",
-            light = "lotus"
+      cfg = { 'catppuccin/nvim', lazy = false, priority = 1000 },
+      --[[ setup = function ()
+        require("catppuccin").setup({
+          term_colors = true,
+          transparent_background = false,
+          styles = {
+            comments = {},
+            conditionals = {},
+            loops = {},
+            functions = {},
+            keywords = {},
+            strings = {},
+            variables = {},
+            numbers = {},
+            booleans = {},
+            properties = {},
+            types = {},
+          },
+          color_overrides = {
+            mocha = {
+              base = "#000000",
+              mantle = "#000000",
+              crust = "#000000",
+            },
           },
         })
-      end
+      end ]]
     },
     {
       cfg = { 'rcarriga/nvim-notify' },
@@ -71,22 +87,6 @@ return {
       setup = function()
         require('modes').setup()
       end
-    },
-    {
-      cfg = {
-        "williamboman/mason.nvim",
-        build = ":MasonUpdate" -- :MasonUpdate updates registry contents
-      },
-      setup = function()
-        require("mason").setup()
-      end
-    },
-    {
-      cfg = {
-        'AlexvZyl/nordic.nvim',
-        lazy = false,
-        priority = 1000,
-      },
     },
   },
   setup_keymap = function(pvim)
