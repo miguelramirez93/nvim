@@ -41,40 +41,10 @@ return {
     laststatus = 3,
   },
   colorscheme = {
-    name = "catppuccin-frappe",
-    background = "dark",
+    name = "kanagawa",
+    background = "",
   },
   plugin_specs = {
-    { 'navarasu/onedark.nvim', lazy = false },
-    {
-      cfg = { 'catppuccin/nvim', lazy = false, priority = 1000 },
-      --[[ setup = function ()
-        require("catppuccin").setup({
-          term_colors = true,
-          transparent_background = false,
-          styles = {
-            comments = {},
-            conditionals = {},
-            loops = {},
-            functions = {},
-            keywords = {},
-            strings = {},
-            variables = {},
-            numbers = {},
-            booleans = {},
-            properties = {},
-            types = {},
-          },
-          color_overrides = {
-            mocha = {
-              base = "#000000",
-              mantle = "#000000",
-              crust = "#000000",
-            },
-          },
-        })
-      end ]]
-    },
     {
       cfg = { 'rcarriga/nvim-notify' },
       setup = function()
@@ -86,6 +56,16 @@ return {
       cfg = { 'mvllow/modes.nvim' },
       setup = function()
         require('modes').setup()
+      end
+    },
+    {
+      cfg = {
+        'rebelot/kanagawa.nvim', lazy = false, priority = 1000,
+      },
+      setup = function()
+        require("kanagawa").setup({
+          theme = "dragon",
+        })
       end
     },
   },
