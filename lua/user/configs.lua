@@ -41,8 +41,8 @@ return {
     laststatus = 3,
   },
   colorscheme = {
-    name = "kanagawa",
-    background = "",
+    name = "melange",
+    background = "dark",
   },
   plugin_specs = {
     {
@@ -60,13 +60,23 @@ return {
     },
     {
       cfg = {
-        'rebelot/kanagawa.nvim', lazy = false, priority = 1000,
+        'rebelot/kanagawa.nvim',
       },
       setup = function()
         require("kanagawa").setup({
           theme = "dragon",
         })
       end
+    },
+    {
+      cfg = {
+        "savq/melange-nvim", lazy = false, priority = 1000,
+      }
+    },
+    {
+      cfg = {
+        "hinell/lsp-timeout.nvim",
+      }
     },
   },
   setup_keymap = function(pvim)
