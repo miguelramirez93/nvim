@@ -41,7 +41,7 @@ return {
     laststatus = 3,
   },
   colorscheme = {
-    name = "melange",
+    name = "nordic",
     background = "dark",
   },
   plugin_specs = {
@@ -70,14 +70,19 @@ return {
     },
     {
       cfg = {
-        "savq/melange-nvim", lazy = false, priority = 1000,
+        "savq/melange-nvim",
       }
     },
     {
       cfg = {
-        "hinell/lsp-timeout.nvim",
+        "navarasu/onedark.nvim",
       }
     },
+    {
+      cfg = {
+        'AlexvZyl/nordic.nvim', lazy = false, priority = 1000,
+      }
+    }
   },
   setup_keymap = function(pvim)
     -- completion
